@@ -1,5 +1,7 @@
 package tk.svsq.newsfeed.presentation.news_list
 
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -16,13 +18,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import tk.svsq.newsfeed.KEYWORD_ANDROID
 import tk.svsq.newsfeed.KEY_ARTICLE
 import tk.svsq.newsfeed.R
+import tk.svsq.newsfeed.data.network.NetworkChangeReceiver
 import tk.svsq.newsfeed.databinding.FragmentNewsBinding
 import tk.svsq.newsfeed.presentation.common.PagingLoadStateAdapter
 import tk.svsq.newsfeed.presentation.common.decoration.SpacingDecorationWithDivider
@@ -44,8 +49,15 @@ class NewsListFragment : Fragment(R.layout.fragment_news) {
 
     private var searchView: SearchView? = null
 
+    private val networkChangeReceiver = NetworkChangeReceiver {
+        if (requireContext().isNetworkAvailable()) {
+            newsArticlesAdapter.retry()
+        }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
 
         setupRecyclerView()
         observeData()
@@ -53,6 +65,9 @@ class NewsListFragment : Fragment(R.layout.fragment_news) {
         setupMenu()
 
         viewModel.getArticles(query = KEYWORD_ANDROID) // Default keyword
+
+        val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        requireContext().registerReceiver(networkChangeReceiver, filter)
     }
 
     private fun setupMenu() {
@@ -130,11 +145,6 @@ class NewsListFragment : Fragment(R.layout.fragment_news) {
 
     private fun handleRetryOption() {
         newsArticlesAdapter.addLoadStateListener { loadState ->
-            if (!requireContext().isNetworkAvailable() && newsArticlesAdapter.itemCount < 1) {
-                showContent(message = getString(R.string.no_network_connection))
-                return@addLoadStateListener
-            }
-
             with(binding) {
                 val isRefresh = loadState.source.refresh
                 // Empty state
@@ -166,6 +176,11 @@ class NewsListFragment : Fragment(R.layout.fragment_news) {
                         isRefreshing = false
                     }
                 }
+            }
+
+            if (!requireContext().isNetworkAvailable() && newsArticlesAdapter.itemCount < 1) {
+                showContent(message = getString(R.string.no_network_connection))
+                return@addLoadStateListener
             }
         }
     }
