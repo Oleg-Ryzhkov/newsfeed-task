@@ -16,4 +16,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/list_item_article" />
+
+    <TextView
+        android:id="@+id/text_empty_favor"
+        android:layout_width="206dp"
+        android:layout_height="77dp"
+        android:text="Oops, it's empty, add news to favorites to display on this page"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
