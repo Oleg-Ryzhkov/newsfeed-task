@@ -6,11 +6,13 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import tk.svsq.newsfeed.KEY_ARTICLE
 import tk.svsq.newsfeed.R
 import tk.svsq.newsfeed.databinding.FragmentFavoriteBinding
@@ -51,6 +53,13 @@ class FavoriteNewsFragment : Fragment(R.layout.fragment_favorite) {
         viewLifecycleOwner.observe {
             viewModel.articles.collectLatest {
                 newsAdapter.submitData(viewLifecycleOwner.lifecycle, it)
+                viewModel.viewModelScope.launch {
+
+                    if (newsAdapter.itemCount == 0){
+                        binding.textEmptyFavor.alpha = 1f
+                    }
+                    else binding.textEmptyFavor.alpha = 0f
+                }
             }
         }
     }

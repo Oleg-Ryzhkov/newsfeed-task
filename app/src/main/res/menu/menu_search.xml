@@ -7,5 +7,32 @@
         android:icon="@drawable/ic_search"
         android:title="@string/search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="ifRoom|collapseActionView" />
+        app:showAsAction="ifRoom|collapseActionView"
+        />
+
+    <item
+        android:id="@+id/action_filter_news"
+        android:icon="@drawable/baseline_filter_alt_24"
+        app:showAsAction="ifRoom|collapseActionView"
+        android:title="TODO">
+
+        <menu>
+            <item
+                android:id="@+id/filterPolitic"
+                android:title="@string/politic" />
+            <item
+                android:id="@+id/filterMovies"
+                android:title="@string/movies" />
+            <item
+                android:id="@+id/filterScience"
+                android:title="@string/science" />
+            <item
+                android:id="@+id/filterSport"
+                android:title="@string/sport" />
+            <item
+                android:id="@+id/filterCooking"
+                android:title="@string/cooking" />
+        </menu>
+    </item>
+
 </menu>
