@@ -21,4 +21,10 @@
     <string name="error_not_loaded">Results could not be loaded</string>
     <string name="msg_error_fetching_news"><![CDATA[Error fetching news ->]]></string>
     <string name="msg_error_load_news">Cannot load news, error: %1s</string>
+
+    <string name="movies">Movies</string>
+    <string name="politic">Politic</string>
+    <string name="science">Science</string>
+    <string name="sport">Sport</string>
+    <string name="cooking">Cooking</string>
 </resources>

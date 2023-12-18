@@ -101,6 +101,13 @@ class NewsListFragment : Fragment(R.layout.fragment_news) {
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.filterPolitic -> { searchForArticles("politic") }
+                    R.id.filterMovies -> { searchForArticles("movies") }
+                    R.id.filterScience -> { searchForArticles("science") }
+                    R.id.filterSport -> { searchForArticles("sport") }
+                    R.id.filterCooking -> { searchForArticles("cooking") }
+                }
                 return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
